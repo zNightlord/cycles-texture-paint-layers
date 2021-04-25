@@ -33,10 +33,11 @@ class MergeVisibleLayers(bpy.types.Operator):
         scene.cycles.bake_type = 'DIFFUSE'
         scene.render.bake.use_pass_direct = False
         scene.render.bake.use_pass_indirect = False
-        scene.bake.use_pass_color = True
-        bpy.ops.object.bake(type='DIFFUSE')
+        bpy.ops.object.bake(type='DIFFUSE',pass_filter=set({'COLOR'}))
 
-        nodes.remove(node_texture)
+        imgNode = mat.layer_keep_imgNode
+        if imgNode == False:
+            nodes.remove(node_texture)
 
         # Restore settings
         scene.render.engine = render_engine
@@ -54,6 +55,7 @@ class MergeVisibleLayers(bpy.types.Operator):
         layout = self.layout
         scene = context.scene
         cbk = scene.render.bake
-
+        mat = context.object.active_material
         layout.prop(cbk, "margin")
         layout.separator()
+        layout.prop(mat, "layer_keep_imgNode")

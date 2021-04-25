@@ -32,13 +32,14 @@ bl_info = {
 
 
 import bpy
+
 from .data.layer_data import Layer
 from .data.layer_img_data import LayerImgData
 from .data.layer_shader_data import LayerShaders
 from .operators.delete_layer import LAYER_OT_dellayer
+from .operators.merge_visible_layers import MergeVisibleLayers
 from .operators.move_layer import LAYER_OT_movelayer
 from .operators.new_layer import LAYER_OT_newlayer
-from .operators.merge_visible_layers import MergeVisibleLayers
 from .ui.layer_list import MATERIAL_UL_layerlist
 from .ui.layer_panel import LAYER_PT_panel
 
@@ -93,7 +94,7 @@ def register():
     bpy.types.Material.layer_private_index = bpy.props.IntProperty(name="PRIVATE layer index", default=0)
     bpy.types.Material.layer_shaders = bpy.props.PointerProperty(type=LayerShaders)
     bpy.types.Material.layer_img_data = bpy.props.PointerProperty(type=LayerImgData)
-
+    bpy.types.Material.layer_keep_imgNode = bpy.props.BoolProperty(name="Keep merged node", default=False, description="Keep merged baked node in node tree")
 
 def unregister():
     for cls in classes:
@@ -104,3 +105,4 @@ def unregister():
     del bpy.types.Material.layer_private_index
     del bpy.types.Material.layer_shaders
     del bpy.types.Material.layer_img_data
+    del bpy.types.Material.layer_keep_imgNode
